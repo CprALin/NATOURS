@@ -10,7 +10,6 @@ router
     .route('/')
     .get(userRouter.getAllUsers)
     .post(userRouter.createUser);
-    
 router
     .route('/:id')
     .get(userRouter.getUser)
