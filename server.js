@@ -3,6 +3,13 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config({ path : './config.env'});
 
+// unclean state - is need to crash
+process.on('uncaughtException' , err => {
+  console.log('UNCAUGHT REJECTION ! - Shutting down...');
+  console.log(err.name , err.message);
+  process.exit(1);  
+});
+
 const app = require('./app');
 
 //console.log(process.env);
@@ -16,9 +23,19 @@ mongoose
     useFindAndModify : false,
     useUnifiedTopology : true
   }).then(() => console.log('DB connection successful!'));
+  //.catch(err => console.log('ERROR !'));
 
 // START SERVER     
 const port = process.env.PORT || 3000;
-app.listen(port , () => {
+const server = app.listen(port , () => {
     console.log(`App running on port ${port}...`);
+});
+
+
+process.on('unhandledRejection', err => {
+    console.log('UNHANDLER REJECTION ! - Shutting down...');
+    console.log(err.name , err.message);
+    server.close(() => {
+      process.exit(1);  
+    });
 });
