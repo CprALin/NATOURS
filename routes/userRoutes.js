@@ -19,7 +19,10 @@ router
     .patch('/resetPassword/:token' , authController.resetPassword);    
 
 router
-    .patch('/updateMyPassword' , authController.protect , authController.updatePassword);    
+    .patch('/updateMyPassword' , authController.protect , authController.updatePassword);
+    
+router 
+    .patch('/updateMe' , authController.protect , userController.updateMe);    
 
 router 
     .route('/')
