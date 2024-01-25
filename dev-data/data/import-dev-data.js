@@ -6,7 +6,7 @@ const Tour = require('./../../models/tourModel');
 
 //console.log(process.env);
 
-const DB = 'mongodb+srv://LocalDB:1qhHFY3dLAVeCw0x@atlascluster.rd7x8hu.mongodb.net/?retryWrites=true&w=majority';
+const DB = process.env.DATABASE.replace('<PASSWORD>' , process.env.DATABASE_PASSWORD);
 
 mongoose
   .connect(DB , {
@@ -18,7 +18,7 @@ mongoose
 
   //READ js file
 
-  const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours-simple.json` , 'utf-8'));
+  const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json` , 'utf-8'));
 
   //IMPORT DATA INTO DB
   const importData = async () => {
