@@ -8,6 +8,7 @@ const hpp = require('hpp');
 
 const globalErr = require('./controllers/errorController');
 const AppError = require('./utils/appError');
+const reviewRouter = require('./routes/reviewRoutes');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const errorController = require('./controllers/errorController');
@@ -63,6 +64,7 @@ app.use((req , res , next) => {
 });
 
 //Mounting Routers
+app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);    
 
