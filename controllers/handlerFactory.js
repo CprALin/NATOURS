@@ -88,7 +88,7 @@ exports.getAll = Model => catchAsync(async (req , res , next) => {
         .limitFields()
         .paginate();
 
-    const doc = await features.query; 
+    const doc = await features.query.explain(); 
     //query.sort().select().skip().limit()...
 
     res.status(200).json({

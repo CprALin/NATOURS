@@ -2,11 +2,13 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config({ path : './config.env'});
-const Tour = require('./../../models/tourModel');
+//const Tour = require('./../../models/tourModel');
+const Review = require('./../../models/reviewModel');
+const User = require('./../../models/userModel');
 
 //console.log(process.env);
 
-const DB = process.env.DATABASE.replace('<PASSWORD>' , process.env.DATABASE_PASSWORD);
+const DB = 'mongodb+srv://LocalDB:1qhHFY3dLAVeCw0x@atlascluster.rd7x8hu.mongodb.net/';
 
 mongoose
   .connect(DB , {
@@ -18,12 +20,16 @@ mongoose
 
   //READ js file
 
-  const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json` , 'utf-8'));
+  //const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json` , 'utf-8'));
+  const reviews = JSON.parse(fs.readFileSync(`${__dirname}/reviews.json`, 'utf-8'));
+  const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`, 'utf-8'));
 
   //IMPORT DATA INTO DB
   const importData = async () => {
         try{
-          await Tour.create(tours);
+          //await Tour.create(tours);
+          await Review.create(reviews);
+          await User.create(users);
           console.log('Data successfuly loaded!');
         }catch(err){
             console.log(err);
@@ -33,7 +39,9 @@ mongoose
   //delete all data from coletion
   const deleteData = async () => {
     try{
-        await Tour.deleteMany();
+        //await Tour.deleteMany();
+        await Review.deleteMany();
+        await User.deleteMany();
         console.log('Data successfuly deleted!');
       }catch(err){
           console.log(err);
