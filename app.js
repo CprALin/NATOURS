@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
@@ -15,7 +16,14 @@ const errorController = require('./controllers/errorController');
 
 const app = express();
 
+// settings for views
+app.set('view engine', 'pug');
+app.set('views' , path.join(__dirname, 'views'));
+
 // 1) MIDDLEWARES
+//Serving static files
+//app.use(express.static(`${__dirname}/public`));
+app.use(express.static(path.join(__dirname , 'public')));
 
 //SET SECURITY HTTP
 app.use(helmet());
@@ -48,9 +56,6 @@ app.use(xss());
 //prevent parameter pollution 
 app.use(hpp({ whitelist : ['duration' , 'maxGroupSize' , 'difficulty' , 'ratingsAvarege'] }));
 
-//Serving static files
-app.use(express.static(`${__dirname}/public`));
-
 //Middleware function - test
 app.use((req, res , next) => {
     console.log('Hello from the middleware');
@@ -61,6 +66,14 @@ app.use((req , res , next) => {
     req.requestTime = new Date().toISOString();
     //console.log(req.headers);
     next();
+});
+
+//ROUTES
+app.get('/' , (req, res) => {
+    res.status(200).render('base', {
+        tour : 'The Forest Hiker',
+        user : 'Jonas'
+    });
 });
 
 //Mounting Routers
