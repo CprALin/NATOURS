@@ -76,6 +76,10 @@ app.get('/' , (req, res) => {
     });
 });
 
+app.get('/overview' , (req , res) => {
+    res.status(200).render('overview');
+});
+
 //Mounting Routers
 app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/tours', tourRouter);
