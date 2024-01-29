@@ -1,11 +1,12 @@
+var mapboxGl = require('mapbox-gl/dist/mapbox-gl');
 //console.log('Hello from the client !');
 
 const locations = JSON.parse(document.getElementById('map').dataset.locations);
 console.log(locations);
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiY3ByYWxpbiIsImEiOiJjbHJ4a281dHExY2p6Mm9wYjAwYjJzZW56In0.ay1Lle5CTnaqLfm-bQPtyQ';
+mapboxGl.accessToken = 'pk.eyJ1IjoiY3ByYWxpbiIsImEiOiJjbHJ4a281dHExY2p6Mm9wYjAwYjJzZW56In0.ay1Lle5CTnaqLfm-bQPtyQ';
 
-const map = new mapboxgl.Map({
+const map = new mapboxGl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v12',
     scrollZoom : false
@@ -14,7 +15,7 @@ const map = new mapboxgl.Map({
     interactive : false */
 });
 
-const bounds = new mapboxgl.LngLatBounds();
+const bounds = new mapboxGl.LngLatBounds();
 
 locations.forEach(loc => {
     //create custom marker
@@ -22,13 +23,13 @@ locations.forEach(loc => {
     el.className = 'marker';
 
     //add marker
-    new mapboxgl.Marker({
+    new mapboxGl.Marker({
         element : el,
         anchor : 'bottom'
     }).setLngLat(loc.coordinates).addTo(map);
 
     //add popup
-    new mapboxgl.Popup({offset : 30}).setLngLat(loc.coordinates).setHTML(`<p>Day ${loc.day} : ${loc.description}</p>`).addTo(map);
+    new mapboxGl.Popup({offset : 30}).setLngLat(loc.coordinates).setHTML(`<p>Day ${loc.day} : ${loc.description}</p>`).addTo(map);
 
     //extend map bounds to include current location
     bounds.extend(loc.coordinates);
