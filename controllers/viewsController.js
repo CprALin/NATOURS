@@ -50,4 +50,28 @@ exports.getLoginForm = (req, res) => {
     ).render('login', {
         title : 'Log into your account'
     });
-}
+};
+
+exports.getAccount = async (req , res) => {
+    res.status(200).render('account', {
+        title : 'Your account'
+    });
+};
+
+/* exports.updateUserData = catchAsync(async (req , res , next) => {
+    console.log('Updateing user');
+
+    const user = await User.FindByIdAndUpdate(req.user.id , {
+        name : req.body.name,
+        email : req.body.email
+    },{
+        new : true,
+        runValidators : true
+    });
+    
+    res.status(200).render('account', {
+        title : 'Your account',
+        user : updatedUser
+    });
+
+}); */
