@@ -64,7 +64,7 @@ exports.getAccount = async (req , res) => {
     const user = await User.FindByIdAndUpdate(req.user.id , {
         name : req.body.name,
         email : req.body.email
-    },{
+    },{ 
         new : true,
         runValidators : true
     });
