@@ -52,6 +52,15 @@ exports.getLoginForm = (req, res) => {
     });
 };
 
+exports.getRegisterForm = (req, res) => {
+    res.status(200).set(
+        'Content-Security-Policy', 
+        "script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;"
+    ).render('register', {
+        title : 'Create new account'
+    });
+};
+
 exports.getAccount = async (req , res) => {
     res.status(200).render('account', {
         title : 'Your account'
