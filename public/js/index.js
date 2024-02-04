@@ -1,11 +1,12 @@
 import '@babel/polyfill';
 import { displayMap } from './mapbox';
-import { login , logout } from "./login";
+import { login , logout , singup } from "./login";
 import { updateSettings } from './updateSettings';
 
 //DOM elements
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
+const registerForm = document.querySelector('.form--register');
 const logoutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
@@ -23,6 +24,17 @@ if(loginForm){
         const password = document.getElementById('password').value;
         login(email, password);
     }); 
+}
+
+if(registerForm){
+    registerForm.addEventListener('submit' , e => {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const passwordConfirm = document.getElementById('password-confirm').value;
+        singup(name, email, password, passwordConfirm);
+    });
 }
 
 if(logoutBtn) logoutBtn.addEventListener('click' , logout);

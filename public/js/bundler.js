@@ -12024,7 +12024,7 @@ var showAlert = exports.showAlert = function showAlert(type, msg) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.logout = exports.login = void 0;
+exports.singup = exports.logout = exports.login = void 0;
 var _axios = _interopRequireDefault(require("axios"));
 var _alerts = require("./alerts");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -12072,8 +12072,8 @@ var login = exports.login = /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }();
-var logout = exports.logout = /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+var singup = exports.singup = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(name, email, password, passwordConfirm) {
     var res;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
@@ -12081,28 +12081,70 @@ var logout = exports.logout = /*#__PURE__*/function () {
           _context2.prev = 0;
           _context2.next = 3;
           return (0, _axios.default)({
-            method: 'GET',
-            url: 'http://localhost:8000/api/v1/users/logout'
+            method: 'POST',
+            url: 'http://localhost:8000/api/v1/users/singup',
+            data: {
+              name: name,
+              email: email,
+              password: password,
+              passwordConfirm: passwordConfirm
+            }
           });
         case 3:
           res = _context2.sent;
-          if (res.data.status = 'success') {
-            location.reload(true);
+          if (res.data.status === 'success') {
+            (0, _alerts.showAlert)('success', 'Registered successfully!');
+            window.setTimeout(function () {
+              login(email, password);
+            }, 1500);
           }
           _context2.next = 10;
           break;
         case 7:
           _context2.prev = 7;
           _context2.t0 = _context2["catch"](0);
-          (0, _alerts.showAlert)('error', 'Error logging out ! Try again.');
+          (0, _alerts.showAlert)('error', _context2.t0.response.data.message);
         case 10:
         case "end":
           return _context2.stop();
       }
     }, _callee2, null, [[0, 7]]);
   }));
-  return function logout() {
+  return function singup(_x3, _x4, _x5, _x6) {
     return _ref2.apply(this, arguments);
+  };
+}();
+var logout = exports.logout = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+    var res;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.prev = 0;
+          _context3.next = 3;
+          return (0, _axios.default)({
+            method: 'GET',
+            url: 'http://localhost:8000/api/v1/users/logout'
+          });
+        case 3:
+          res = _context3.sent;
+          if (res.data.status = 'success') {
+            location.reload(true);
+          }
+          _context3.next = 10;
+          break;
+        case 7:
+          _context3.prev = 7;
+          _context3.t0 = _context3["catch"](0);
+          (0, _alerts.showAlert)('error', 'Error logging out ! Try again.');
+        case 10:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee3, null, [[0, 7]]);
+  }));
+  return function logout() {
+    return _ref3.apply(this, arguments);
   };
 }();
 },{"axios":"../../node_modules/axios/index.js","./alerts":"alerts.js"}],"updateSettings.js":[function(require,module,exports) {
@@ -12298,6 +12340,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //DOM elements
 var mapBox = document.getElementById('map');
 var loginForm = document.querySelector('.form--login');
+var registerForm = document.querySelector('.form--register');
 var logoutBtn = document.querySelector('.nav__el--logout');
 var userDataForm = document.querySelector('.form-user-data');
 var userPasswordForm = document.querySelector('.form-user-password');
@@ -12313,6 +12356,16 @@ if (loginForm) {
     var email = document.getElementById('email').value;
     var password = document.getElementById('password').value;
     (0, _login.login)(email, password);
+  });
+}
+if (registerForm) {
+  registerForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = document.getElementById('name').value;
+    var email = document.getElementById('email').value;
+    var password = document.getElementById('password').value;
+    var passwordConfirm = document.getElementById('password-confirm').value;
+    (0, _login.singup)(name, email, password, passwordConfirm);
   });
 }
 if (logoutBtn) logoutBtn.addEventListener('click', _login.logout);
@@ -12386,7 +12439,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61471" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65464" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
