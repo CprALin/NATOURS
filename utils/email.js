@@ -87,6 +87,6 @@ module.exports = class Email {
 
     // 3) Actually send the email
     await transporter.sendMail(mailOptions);
-}); */
+});  */
 
 module.exports = sendEmail;
