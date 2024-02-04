@@ -1,16 +1,16 @@
 const nodemailer = require('nodemailer');
-const catchAsync = require('./catchAsync');
+//const catchAsync = require('./catchAsync');
 const pug = require('pug');
 const htmlToText = require('html-to-text');
 
 //new Email(user , url).sendWelcome();
 
-module.exports = class Email {
+ module.exports = class Email {
     constructor(user , url){
         this.to = user.email;
         this.firstName = user.name.split(' ')[0];
         this.url = url;
-        this.form = `Cpr Alin <${process.env.EMAIL_FROM}>`
+        this.from = `Cpr Alin <${process.env.EMAIL_FROM}>`
     }
 
     newTransport(){
@@ -43,11 +43,11 @@ module.exports = class Email {
 
         // 2) Define email options
         const mailOptions = {
-            from : this.form,
+            from : this.from,
             to : this.to,
             subject,
             html,
-            text : htmlToText.fromString(html)
+            text : htmlToText.htmlToText(html)
         };
 
         // 3 ) Create a transport and send Email       
@@ -58,9 +58,9 @@ module.exports = class Email {
     async sendWelcome(){
        await this.send('Welcome' , 'Welcome to the Natours Family!');
     }
-}
+} 
 
-/* const sendEmail = catchAsync(async options => {
+/*  const sendEmail = catchAsync(async options => {
     // 1) Create a transporter
     const transporter = nodemailer.createTransport({
         host : process.env.EMAIL_HOST,
@@ -87,6 +87,6 @@ module.exports = class Email {
 
     // 3) Actually send the email
     await transporter.sendMail(mailOptions);
-});  */
+});  
 
-module.exports = sendEmail;
+module.exports = sendEmail; */
