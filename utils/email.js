@@ -16,7 +16,14 @@ const htmlToText = require('html-to-text');
     newTransport(){
         if(process.env.NODE_ENV === 'production')
         {
-            return 1;
+            //SendGrid
+            return nodemailer.createTransport({
+                service : 'SendGrid',
+                auth : {
+                    user : process.env.user,
+                    pass : process.env.pass
+                }
+            });
         }
 
         return nodemailer.createTransport({
@@ -56,7 +63,11 @@ const htmlToText = require('html-to-text');
     };
 
     async sendWelcome(){
-       await this.send('Welcome' , 'Welcome to the Natours Family!');
+       await this.send('welcome' , 'Welcome to the Natours Family!');
+    }
+
+    async sendPasswordReset(){
+        await this.send('passwordReset' , 'Your password reset token (valid for only 10 minutes)');
     }
 } 
 
