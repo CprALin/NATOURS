@@ -7,23 +7,32 @@ const factory = require('./handlerFactory');
 exports.getCheckoutSession = catchAsync(async (req , res , next) => {
     // get the currently booked tour
     const tour = await Tour.findById(req.params.tourId);
+    
+    //add product to stripe
+    const product = await stripe.products.create({
+        name : `${tour.name}`,
+        description : tour.summary,
+        images : [`https://www.natours.dev/img/tours/${tour.imageCover}`]
+    });
+
+    // create price
+    const price = await stripe.prices.create({
+        product : product.id,
+        unit_amount : tour.price * 100,
+        currency : 'usd'
+    });
+    
     // create checkout session
     const session = await stripe.checkout.sessions.create({
-        payment_method_types : ['card'] , 
-        success_url : `${req.protocol}://${req.get('host')}/`,
-        cancel_url : `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
-        customer_email : req.user.email,
-        client_reference_id : req.params.tourId,
         line_items : [
             {
-                name : `${tour.name} Tour`,
-                description : tour.summary,
-                images : [`https://www.natours.dev/img/tours/${tour.imageCover}`],
-                amount : tour.price * 100,
-                currency : 'usd',
+                price : price.id,
                 quantity : 1
             }
-        ]
+        ],
+        mode : 'payment',
+        success_url : `${req.protocol}://${req.get('host')}/`,
+        cancel_url : `${req.protocol}://${req.get('host')}/tour/${tour.slug}`
     }); 
     // create session as response 
     res.status(200).json({
